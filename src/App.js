@@ -10,7 +10,7 @@ import './App.css';
 const particlesOptions = {
   particles: {
     number: {
-      value: 80,
+      value: 100,
       density: {
         enable: true,
         value_area: 800
@@ -21,7 +21,22 @@ const particlesOptions = {
     }
   }
 class App extends Component{
+  constructor(){
+    super();
+    this.state = {
+      // creating state for ImageLinkForm
+      input: '',
+    }
+  }
 
+  onInputChange = (event) => {
+    console.log(event.target.value);
+  }
+
+  onButtonSubmit = () => {
+    console.log('click');
+  }
+// onButtonSubmit function for detect button and click event handle
   render() {
 
   return (
@@ -32,9 +47,10 @@ class App extends Component{
       <Navigation/>
        <Logo/>
        <Rank/>
-       <ImageLinkForm/>
+       <ImageLinkForm 
+       onInputChange={this.onInputChange} 
+       onButtonSubmit={this.onButtonSubmit}/>
        {/*
-    
       <FaceRecognition/>*/}
     </div>
     );
