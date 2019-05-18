@@ -3,6 +3,7 @@ import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 import FaceRecognition from './FaceRecognition.js'
 import Navigation from './Navigation.js';
+import Signin from './Signin.js'
 import Logo from './Logo.js';
 import ImageLinkForm from './ImageLinkForm.js';
 import Rank from './Rank.js';
@@ -35,6 +36,7 @@ class App extends Component{
       input: '',
       imageUrl: '',
       box: {},
+      route: 'signin'
     }
   }
   calculateFaceLocaton = (data) => {
@@ -63,14 +65,14 @@ displayFaceBox = (box) => {
     app.models.predict(
      "a403429f2ddf4b49b307e318f00e528b",
     this.state.input)
-    // model-id with url 
+    // model-id 
   .then(response => this.displayFaceBox(this.calculateFaceLocaton(response))) 
-    // console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
-    // parse object to get data from console
-    // do something with responseconsole.log(response);
-    
     .catch(err => console.log(err));
 
+  }
+
+  onRouteChange = (route) => {
+    this.setState({route: route})
   }
   render() {
 
@@ -79,13 +81,18 @@ displayFaceBox = (box) => {
     <Particles className='particles'
         params={particlesOptions}
         />
-      <Navigation/>
-       <Logo/>
-       <Rank/>
-       <ImageLinkForm 
-       onInputChange={this.onInputChange} 
-       onButtonSubmit={this.onButtonSubmit}/>  
-      <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
+      <Navigation onRouteChange={this.onRouteChange}/>
+      { this.state.route === 'signin'
+        ? <Signin onRouteChange={this.onRouteChange}/>
+        : <div>
+        : <Logo/>
+           <Rank/>
+           <ImageLinkForm 
+           onInputChange={this.onInputChange} 
+           onButtonSubmit={this.onButtonSubmit}/>  
+          <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
+          </div>
+    }
     </div>
     );
   }
